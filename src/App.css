@@ -1,38 +1,112 @@
-.App {
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar {
+  display: flex;
+  background-color: pink;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+}
+
+.links a {
+  text-decoration: none;
+  margin: 0 1.5em;
+}
+
+.user-detail img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.user-detail {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+}
+
+.user-detail :hover {
+  cursor: pointer;
+}
+
+section.logo {
+  font-size: x-large;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 5px;
+}
+
+.login {
+  box-shadow: 0 0 2px grey;
+  width: fit-content;
+  margin: 2em auto;
   text-align: center;
+  padding: 1em;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.login .loginBtn {
+  padding: .5em 3em;
+  margin: 1em 0;
+  display: flex;
+  border: 1px solid black;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.login .loginBtn img {
+  width: 20px;
+  margin: 0 10px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.login p {
+  padding: .5em 3em;
+  font-weight: 600;
+}
+
+.login .loginBtn:hover {
+  background-color: whitesmoke;
+  cursor: pointer;
+}
+
+.additional {
+  background-color: white;
+  border: 1px solid black;
+  position: absolute;
+  top: 4em;
+}
+
+.additional:hover {
+  color: skyblue;
+  cursor: pointer;
+}
+
+.post-form {
+  width: 50%;
+  margin: 3em auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 1em;
 }
 
-.App-link {
-  color: #61dafb;
+.post-form p {
+  color: red;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.post-form input[type="text"] {
+  border: none;
+  border-bottom: 1px solid grey;
+}
+
+.post-form input[type="submit"] {
+  width: fit-content;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.post-form input[type="submit"] :hover {
+  cursor: pointer;
 }
