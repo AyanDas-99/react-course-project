@@ -4,6 +4,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { addDoc, collection } from "firebase/firestore"
 import { db, auth } from '../../config/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth'
+import { useNavigate } from 'react-router-dom'
+
 // typescript onsubmit data type
 interface FormData {
     title: string;
@@ -11,6 +13,7 @@ interface FormData {
 }
 
 export const PostForm = () => {
+    const navigate = useNavigate();
 
     const [user] = useAuthState(auth);
 
@@ -32,6 +35,7 @@ export const PostForm = () => {
             username: user?.displayName,
             userId: user?.uid
         })
+        navigate('/');
     }
 
     return (
