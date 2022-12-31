@@ -1,7 +1,8 @@
-import { db } from '../../config/firebase';
+import { auth, db } from '../../config/firebase';
 import { getDocs, collection } from 'firebase/firestore'
 import { useEffect, useState } from 'react';
-import { Post as PostElement} from './post';
+import { Post as PostElement } from './post';
+import { useNavigate } from 'react-router-dom';
 
 export interface Post {
     id: string;
@@ -12,6 +13,7 @@ export interface Post {
 }
 
 export const Home = () => {
+    const navigate = useNavigate();
     const postRef = collection(db, "posts");
 
     const [postList, setPostlist] = useState<Post[] | null>(null)
@@ -24,13 +26,15 @@ export const Home = () => {
     }
 
     useEffect(() => {
+
+        if (!auth.currentUser) navigate("/login")
         getData();
     }, []);
 
     return (
         <div>
-            <div style={{display: "flex"}}>
-                {postList && postList.map((post, key) => <PostElement post={post} key={key}/>)}
+            <div style={{ display: "flex" }}>
+                {postList && postList.map((post, key) => <PostElement post={post} key={key} />)}
             </div>
         </div>
     )

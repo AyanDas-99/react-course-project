@@ -1,4 +1,4 @@
-import { collection, addDoc, query, where, getDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { Post as IPost } from "./Home"
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -7,6 +7,10 @@ import { useEffect, useState } from "react";
 
 interface Props {
     post: IPost
+}
+
+interface Like {
+    userId: string;
 }
 
 export const Post = (props: Props) => {
@@ -19,7 +23,7 @@ export const Post = (props: Props) => {
 
     const likesDoc = query(likesRef, where("postId", "==", post.id))
 
-    const [likeAmount, setLikeAmount] = useState<number | null>(null);
+    const [Likes, setLikes] = useState<Like[] | null>(null);
 
     const addLike = async () => {
         await addDoc(likesRef, {
@@ -29,13 +33,27 @@ export const Post = (props: Props) => {
         getLikes();
     }
 
+    const removeLike = async () => {
+        const likeToDeleteQuery = query(likesRef, where('postId', "==", post.id), where('userId', '==', user?.uid));
+        const likeToDeleteData = await getDocs(likeToDeleteQuery);
+        const likeToDelete = doc(db, "likes", likeToDeleteData.docs[0].id);
+
+        await deleteDoc(likeToDelete)
+        getLikes();
+    }
+
+
+
     const getLikes = async () => {
         const data = await getDocs(likesDoc);
-        setLikeAmount(data.docs.length);
+        setLikes(data.docs.map((doc) => ({ userId: doc.data().userId })));
     }
+
+    const hasLiked = Likes?.find((like) => like.userId === user?.uid)
 
     useEffect(() => {
         getLikes();
+        console.log(Likes)
     }, []);
 
     return (
@@ -44,8 +62,8 @@ export const Post = (props: Props) => {
             <h4 style={{ margin: "10px 0" }}>{post.title}</h4>
             <p style={{ margin: "10px 0" }}>{post.description}</p>
             <div className="footer" style={{ borderTop: "1px solid grey", margin: "10px 0" }}>
-                <button onClick={addLike} style={{ background: 'none', border: "none", cursor: "pointer" }}>&#128077;</button>
-                {likeAmount && <p>Likes: {likeAmount}</p>}
+                <button onClick={hasLiked? removeLike: addLike} style={{ background: 'none', border: "none", cursor: "pointer" }}>{hasLiked ? <>❤️</> : <>♡</>}</button>
+                {Likes && <p>Likes: {Likes.length}</p>}
             </div>
         </div>
     )
